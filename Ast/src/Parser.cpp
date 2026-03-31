@@ -446,6 +446,12 @@ AstStat* Parser::parseStat()
         return parseRepeat();
     case Lexeme::ReservedFunction:
         return parseFunctionStat(AstArray<AstAttr*>({nullptr, 0}));
+    case Lexeme::ReservedDef:
+        {
+            Location start = lexer.current().location;
+            nextLexeme(); // consume "def"
+            return parseLocal(start, start.begin, {nullptr, 0}, false);
+        }
     case Lexeme::ReservedLocal:
         if (FFlag::LuauConst2)
         {
